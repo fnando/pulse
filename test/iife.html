@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+  </head>
+  <body>
+    <h1>Counter</h1>
+    <div data-controller="counter">
+      <p>
+        <strong data-counter-target="output">0</strong>
+      </p>
+      <button data-counter-target="increment">Increment</button>
+      <button data-counter-target="decrement">Decrement</button>
+    </div>
+
+    <script src="../dist/pulse.js"></script>
+    <script>
+      class Counter extends Pulse.Controller {
+        connect() {
+          this.count = 0;
+          this.on("increment->click", this.increment);
+          this.on("decrement->click", this.decrement);
+        }
+
+        increment() {
+          this.count += 1;
+          this.update();
+        }
+
+        decrement() {
+          this.count -= 1;
+          this.update();
+        }
+
+        update() {
+          this.target("output").textContent = this.count.toString();
+        }
+      }
+
+      const app = new Pulse.Application();
+      app.register("counter", Counter);
+      app.start();
+    </script>
+  </body>
+</html>
