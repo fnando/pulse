@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+  </head>
+  <body>
+    <div class="group" data-controller="counter-manager">
+      <div style="display: flex; align-items: center; gap: 1rem">
+        <h1>Counter</h1>
+        <p>
+          <button data-counter-manager-target="add">+</button>
+        </p>
+      </div>
+      <div data-controller="counter">
+        <p>
+          <strong data-counter-target="output">0</strong>
+        </p>
+        <button data-counter-target="increment">Increment</button>
+        <button data-counter-target="decrement">Decrement</button>
+        <button data-counter-manager-target="remove">-</button>
+        <script src="../dist/multipleControllers.js"></script>
+      </div>
+    </div>
+  </body>
+</html>

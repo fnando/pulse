@@ -1,0 +1,40 @@
+{
+  "name": "@fnando/pulse",
+  "version": "0.0.0",
+  "type": "module",
+  "module": "dist/index.js",
+  "private": true,
+  "description": ".",
+  "author": {
+    "name": "Nando Vieira",
+    "email": "me@fnando.com",
+    "url": "https://github.com/fnando"
+  },
+  "homepage": "https://github.com/fnando/pulse",
+  "license": "MIT",
+  "bugs": "https://github.com/fnando/pulse/issues",
+  "repository": "https://github.com/fnando/pulse.git",
+  "scripts": {
+    "test": "bin/test",
+    "lint": "npm run lint:ts && npm run lint:eslint",
+    "lint:ts": "tsc --noEmit",
+    "lint:eslint": "eslint src --max-warnings 0",
+    "build": "rm -rf dist && bin/build",
+    "esbuild": "esbuild"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "@fnando/codestyle": "^0.0.13",
+    "@fnando/eslint-config-codestyle": "^0.0.11",
+    "@playwright/test": "^1.51.1",
+    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/parser": "^8.28.0",
+    "esbuild": "^0.25.2",
+    "eslint": "^9.23.0",
+    "globals": "^16.0.0",
+    "playwright": "^1.51.1",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.29.0"
+  }
+}
