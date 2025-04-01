@@ -1,0 +1,15 @@
+{
+  "extends": "@fnando/codestyle",
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules", "test/**/*.ts"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
+    "noEmit": false,
+    "outDir": "dist",
+    "sourceMap": true,
+    "paths": {
+      "~/*": ["src/*"]
+    }
+  }
+}
