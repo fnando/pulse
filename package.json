@@ -27,7 +27,7 @@
     "@fnando/codestyle": "^0.0.13",
     "@fnando/eslint-config-codestyle": "^0.0.11",
     "@playwright/test": "^1.51.1",
-    "@typescript-eslint/eslint-plugin": "^8.28.0",
+    "@typescript-eslint/eslint-plugin": "^8.29.1",
     "@typescript-eslint/parser": "^8.28.0",
     "esbuild": "^0.25.2",
     "eslint": "^9.23.0",
