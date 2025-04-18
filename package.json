@@ -1,6 +1,6 @@
 {
   "name": "@fnando/pulse",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "module": "dist/index.js",
   "description": "Pulse is a lightweight JavaScript framework that enhances your HTML rather than replacing it.",
