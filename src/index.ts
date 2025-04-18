@@ -98,10 +98,10 @@ export class Application<E extends HTMLElement = HTMLElement> {
    * Register a controller to the application. This method must be called before
    * the `start` method.
    *
-   * @param {string}   name       The name of the controller. This name will be
-   *                              used in the `data-controller` attribute.
-   * @param {typeof Controller} controller The controller class that will be
-   *                                       registered.
+   * @param {string}   name     The name of the controller. This name will be
+   *                            used in the `data-controller` attribute.
+   * @param {typeof Controller} controllerClass The controller class that will
+   *                            be registered.
    */
   register<T extends HTMLElement>(
     name: string,
@@ -184,7 +184,7 @@ export class Application<E extends HTMLElement = HTMLElement> {
    * track of them.
    *
    * This method is not meant to be called directly, as it's called by the app's
-   * start function and the mutation observer (where DOM changes).
+   * start function and the mutation observer (when DOM changes).
    *
    * @param {HTMLElement} element The element that will be connected to the
    *                              controllers.
