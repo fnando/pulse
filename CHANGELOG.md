@@ -11,6 +11,10 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v0.0.3
+
+- [Added] Export types.
+
 ## v0.0.2
 
 - [Added] Actually publish exported files.
