@@ -3,6 +3,12 @@
   "version": "0.0.1",
   "type": "module",
   "module": "dist/index.js",
+  "files": [
+    "dist/",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE.md"
+  ],
   "description": "Pulse is a lightweight JavaScript framework that enhances your HTML rather than replacing it.",
   "author": {
     "name": "Nando Vieira",
