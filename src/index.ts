@@ -273,8 +273,8 @@ export class Application<E extends HTMLElement = HTMLElement> {
  * }
  */
 export class Controller<E extends HTMLElement = HTMLElement> {
-  private element: E;
-  private listeners: (() => void)[] = [];
+  public readonly element: E;
+  public readonly listeners: (() => void)[] = [];
   public readonly identifier: string;
 
   constructor(identifier: string, element: E) {
