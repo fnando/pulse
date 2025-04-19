@@ -77,9 +77,7 @@ function parseEventExpression(expression: string): EventExpression {
   const [target, rest] = expression.split("->");
   const [eventExpr, ...modifiers] = rest.split(":");
   const [event, comboExpr] = eventExpr.split(".");
-  const keys = (comboExpr ?? "")
-                .split("+")
-                .filter(key => key.trim());
+  const keys = (comboExpr ?? "").split("+").filter((key) => key.trim());
   const key = keys.find((k) => !keyboardModifiers.includes(k)) ?? "";
 
   return { target, event, keys, key, modifiers };
@@ -97,7 +95,7 @@ function parseEventExpression(expression: string): EventExpression {
 export class Application<E extends HTMLElement = HTMLElement> {
   private element: E;
   private observer: MutationObserver;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: we don't care about type
   private registrations: Record<string, ControllerConstructor<any>> = {};
   private controllerId = 0;
   private associations = new Map<string, Controller[]>();

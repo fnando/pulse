@@ -1,7 +1,7 @@
 import { test, expect } from "@playwright/test";
 import path from "path";
 
-const testsDir = path.join(process.cwd(), "test")
+const testsDir = path.join(process.cwd(), "test");
 
 test("increment/decrement", async ({ page }) => {
   await page.goto(`file://${testsDir}/counter.html`);
