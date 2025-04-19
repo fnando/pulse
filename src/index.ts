@@ -21,7 +21,7 @@ type TargetElement = Document | HTMLElement | Window;
  * If you'd like to have a custom target, you can add it here.
  *
  * @example
- * import {targetMapping} from "pulse";
+ * import { targetMapping } from "@fnando/pulse";
  * targetMapping["@custom"] = document.querySelector("#custom");
  *
  * @type {Record<string, TargetElement>}
@@ -34,6 +34,17 @@ export const targetMapping: Record<string, TargetElement> = {
   "@html": document.documentElement,
 };
 
+/**
+ * Map keys to their corresponding key names.
+ * If you'd like to have a custom key, you can add it here.
+ *
+ * @example
+ * import { keyMapping } from "@fnando/pulse";
+ * keyMapping["at"] = "@";
+ * this.on("input->keydown.shift+at", (event) => {});
+ *
+ * @type {Record<string, string>}
+ */
 export const keyMapping: Record<string, string> = {
   enter: "Enter",
   tab: "Tab",
@@ -66,7 +77,9 @@ function parseEventExpression(expression: string): EventExpression {
   const [target, rest] = expression.split("->");
   const [eventExpr, ...modifiers] = rest.split(":");
   const [event, comboExpr] = eventExpr.split(".");
-  const keys = (comboExpr ?? "").split("+");
+  const keys = (comboExpr ?? "")
+                .split("+")
+                .filter(key => key.trim());
   const key = keys.find((k) => !keyboardModifiers.includes(k)) ?? "";
 
   return { target, event, keys, key, modifiers };
@@ -287,11 +300,13 @@ export class Controller<E extends HTMLElement = HTMLElement> {
    *
    * ## The expression format
    *
-   * The expression comes in a form of `target->event:modifiers`, where
+   * The expression comes in a form of `target->event.key:modifiers`, where
    *
    * - `target` is the actual `[data-controller-name-target=name]` attribute.
    *   You can specify some special targets like `@window`, `@body` and `@doc`.
    * - `event` is any JavaScript event name.
+   * - `key` is the key name. This is only used for keyboard events. Can be a
+   *   single key or a combination of keys. For example, `ctrl+enter`.
    * - `modifiers` can be either `:prevent` for `preventDefault()`, or `:stop`
    *   for `stopPropagation()`.
    *
@@ -323,6 +338,10 @@ export class Controller<E extends HTMLElement = HTMLElement> {
    * @example
    * // Using modifiers
    * this.on("button->click:prevent", this.search);
+   *
+   * @example
+   * // Using keyboard events
+   * this.on("input->keydown.ctrl+enter:prevent", this.search);
    */
   on(
     expression: string,
