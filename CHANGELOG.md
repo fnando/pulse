@@ -11,9 +11,13 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v0.0.5
+
+- [Fixed] Keyboard event handling when no key combo is provided.
+
 ## v0.0.4
 
-- [Changed] Change visibility of controller attributes (element, listener, and 
+- [Changed] Change visibility of controller attributes (element, listener, and
   identifier).
 
 ## v0.0.3
