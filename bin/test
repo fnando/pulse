@@ -1,3 +1,8 @@
 #!/usr/bin/env bash
+set -e
+
+npm install
+npx playwright install
 bin/build --test
 playwright test
+npm run lint
