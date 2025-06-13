@@ -6,5 +6,5 @@
 4. Run `npm run build` to build the project.
 5. Make a commit like `Bump up version (v0.0.0)`.
 6. Add a tag like `git tag v0.0.0`.
-7. Push the commit and tag to GitHub with `git push --follow-tags`.
+7. Push the commit and tag to GitHub with `git push && git push --tags`.
 8. Publish the package to npm with `npm publish --access public`.

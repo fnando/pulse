@@ -11,6 +11,10 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## v0.0.6
+
+- [Changed] Add support for `@element` as a target to the root element.
+
 ## v0.0.5
 
 - [Fixed] Keyboard event handling when no key combo is provided.
