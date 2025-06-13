@@ -322,6 +322,10 @@ export class Controller<E extends HTMLElement = HTMLElement> {
    *                                    listener.
    *
    * @example
+   * // Set event on the root element.
+   * this.on("@element->submit:prevent:stop", this.submitForm);
+   *
+   * @example
    * <button data-counter-target="increment">
    * this.on("increment->click", this.increment);
    *
@@ -351,14 +355,17 @@ export class Controller<E extends HTMLElement = HTMLElement> {
       const bound = callback.bind(this);
       const selector = `[data-${this.identifier}-target="${descriptor.target}"]`;
       const target = targetMapping[descriptor.target] || this.element;
+
       const conditions = [
         // Validate whenever the target matches.
         targetMapping[descriptor.target]
           ? () => true
           : (event: Event) =>
               event.target &&
-              "matches" in event.target &&
-              (event.target as HTMLElement).matches(selector),
+              (("matches" in event.target &&
+                (event.target as HTMLElement).matches(selector)) ||
+                (descriptor.target === "@element" &&
+                  event.target === this.element)),
 
         // Validate keyboard events.
         (event: Event): boolean => {

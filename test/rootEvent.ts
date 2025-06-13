@@ -5,8 +5,8 @@ class Counter extends Controller {
 
   connect() {
     this.count = 0;
-    this.on("increment->click", this.increment, { once: true });
-    this.on("decrement->click", this.decrement, { once: true });
+    console.log("Counter connected", this.element);
+    this.on("@element->click", this.increment);
   }
 
   increment() {
@@ -14,13 +14,8 @@ class Counter extends Controller {
     this.update();
   }
 
-  decrement() {
-    this.count -= 1;
-    this.update();
-  }
-
   update() {
-    this.target("output").textContent = this.count.toString();
+    this.element.textContent = `Click: ${this.count}`;
   }
 }
 

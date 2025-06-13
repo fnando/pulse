@@ -76,6 +76,15 @@ test("using @window", async ({ page }) => {
   await expect(page.locator("strong")).toHaveText("95");
 });
 
+test("using @element", async ({ page }) => {
+  await page.goto(`file://${testsDir}/root-event.html`);
+  await expect(page.locator("button")).toHaveText("Click: 0");
+  await page.locator("button").click();
+  await expect(page.locator("button")).toHaveText("Click: 1");
+  await page.locator("button").click();
+  await expect(page.locator("button")).toHaveText("Click: 2");
+});
+
 test("using keyboard events", async ({ page }) => {
   const logs: string[] = [];
 
