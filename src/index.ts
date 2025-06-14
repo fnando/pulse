@@ -360,12 +360,25 @@ export class Controller<E extends HTMLElement = HTMLElement> {
         // Validate whenever the target matches.
         targetMapping[descriptor.target]
           ? () => true
-          : (event: Event) =>
-              event.target &&
-              (("matches" in event.target &&
-                (event.target as HTMLElement).matches(selector)) ||
-                (descriptor.target === "@element" &&
-                  event.target === this.element)),
+          : (event: Event) => {
+              console.log(event.target, event.currentTarget);
+
+              return [
+                // If the event target matches the selector.
+                event.target &&
+                  "matches" in event.target &&
+                  ((event.target as HTMLElement).matches(selector) ||
+                    (descriptor.target === "@element" &&
+                      event.target === this.element)),
+
+                // If the event currentTarget matches the selector.
+                event.currentTarget &&
+                  "matches" in event.currentTarget &&
+                  ((event.currentTarget as HTMLElement).matches(selector) ||
+                    (descriptor.target === "@element" &&
+                      event.currentTarget === this.element)),
+              ].some(Boolean);
+            },
 
         // Validate keyboard events.
         (event: Event): boolean => {

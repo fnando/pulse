@@ -11,6 +11,14 @@ test("increment/decrement", async ({ page }) => {
   await expect(page.locator("strong")).toHaveText("0");
 });
 
+test("increment/decrement with currentTarget", async ({ page }) => {
+  await page.goto(`file://${testsDir}/current-target.html`);
+  await page.getByRole("button", { name: "Increment" }).locator("img").click();
+  await expect(page.locator("strong")).toHaveText("1");
+  await page.getByRole("button", { name: "Decrement" }).locator("img").click();
+  await expect(page.locator("strong")).toHaveText("0");
+});
+
 test("increment/decrement (iife)", async ({ page }) => {
   await page.goto(`file://${testsDir}/iife.html`);
   await page.getByRole("button", { name: "Increment" }).click();
