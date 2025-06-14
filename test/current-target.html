@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title></title>
+    <style>
+      button {
+        background: none;
+        padding: 0;
+        border: 0;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Counter</h1>
+    <div data-controller="counter">
+      <p>
+        <strong data-counter-target="output">0</strong>
+      </p>
+      <button data-counter-target="increment">
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNCI+CiAgICA8cGF0aCBmaWxsPSIjMDAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik01LjcyNiAyMC43NHEtMS41ODUgMC0yLjQxLS44MTZ0LS44MjYtMi4zODFWNS45NDdxMC0xLjU2NS44MjYtMi4zODYuODI1LS44MiAyLjQxLS44MmgxMS41MjlxMS41ODQgMCAyLjQxLjgyLjgyNS44MjEuODI1IDIuMzg2djExLjU5NnEwIDEuNTY1LS44MjUgMi4zODEtLjgyNi44MTYtMi40MS44MTZ6bS43NjQtOS40OWEuOTMuOTMgMCAwIDAgLjI3Ni42OTNxLjI3Ni4yNy43MDcuMjdoMi41MzV2Mi41NTRxMCAuNDIyLjI3NS42OThhLjk1Ljk1IDAgMCAwIC42OTguMjc1Ljk2Ljk2IDAgMCAwIC43MDMtLjI3NS45NC45NCAwIDAgMCAuMjgtLjY5OHYtMi41NTNoMi41NDRhLjk3Ljk3IDAgMCAwIC43MDItLjI3MS45Mi45MiAwIDAgMCAuMjgtLjY5NC45Ni45NiAwIDAgMC0uMjc1LS43MDcuOTYuOTYgMCAwIDAtLjcwNy0uMjc1aC0yLjU0NFY3LjcyM2EuOTUuOTUgMCAwIDAtLjk4My0uOTgzLjk1Ljk1IDAgMCAwLS42OTguMjc2Ljk2Ljk2IDAgMCAwLS4yNzUuNzA3djIuNTQ0SDcuNDczYS45Ni45NiAwIDAgMC0uNzA3LjI3NS45Ni45NiAwIDAgMC0uMjc2LjcwNyIvPgo8L3N2Zz4K"
+        />
+      </button>
+      <button data-counter-target="decrement">
+        <img
+          src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMyIgaGVpZ2h0PSIyNCI+CiAgICA8cGF0aCBmaWxsPSIjMDAwIiBmaWxsLXJ1bGU9Im5vbnplcm8iIGQ9Ik01LjcyNiAyMC43NHEtMS41ODUgMC0yLjQxLS44MTZ0LS44MjYtMi4zODFWNS45NDdxMC0xLjU2NS44MjYtMi4zODYuODI1LS44MiAyLjQxLS44MmgxMS41MjlxMS41ODQgMCAyLjQxLjgyLjgyNS44MjEuODI1IDIuMzg2djExLjU5NnEwIDEuNTY1LS44MjUgMi4zODEtLjgyNi44MTYtMi40MS44MTZ6bTEuODk2LThoNy43MzZxLjQ5IDAgLjgxMi0uMjcyYS45LjkgMCAwIDAgLjMyLS43MjNxMC0uNDYtLjMxLS43MzItLjMxLS4yNzMtLjgyMi0uMjczSDcuNjIycS0uNTAxIDAtLjgxNi4yNzMtLjMxNi4yNzItLjMxNi43MzIgMCAuNDUuMzIuNzIzLjMyMi4yNzIuODEyLjI3MiIvPgo8L3N2Zz4K"
+        />
+      </button>
+      <script src="../dist/currentTarget.js"></script>
+    </div>
+  </body>
+</html>

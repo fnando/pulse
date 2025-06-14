@@ -11,6 +11,14 @@ test("increment/decrement", async ({ page }) => {
   await expect(page.locator("strong")).toHaveText("0");
 });
 
+test("increment/decrement with currentTarget", async ({ page }) => {
+  await page.goto(`file://${testsDir}/current-target.html`);
+  await page.locator("button[data-counter-target=increment] > img").click();
+  await expect(page.locator("strong")).toHaveText("1");
+  await page.locator("button[data-counter-target=decrement] > img").click();
+  await expect(page.locator("strong")).toHaveText("0");
+});
+
 test("increment/decrement (iife)", async ({ page }) => {
   await page.goto(`file://${testsDir}/iife.html`);
   await page.getByRole("button", { name: "Increment" }).click();
@@ -67,10 +75,34 @@ test("event options", async ({ page }) => {
   await page.locator("[data-counter-target=increment]").click();
   await page.locator("[data-counter-target=increment]").click();
   await expect(page.locator("strong")).toHaveText("1");
+  await page.locator("[data-counter-target=decrement]").click();
+  await page.locator("[data-counter-target=decrement]").click();
+  await expect(page.locator("strong")).toHaveText("0");
 });
 
 test("using @window", async ({ page }) => {
   await page.goto(`file://${testsDir}/window-events.html`);
+  await expect(page.locator("strong")).toHaveText("100");
+  await page.locator("[data-chars-left-target=input]").fill("hello");
+  await expect(page.locator("strong")).toHaveText("95");
+});
+
+test("using @body", async ({ page }) => {
+  await page.goto(`file://${testsDir}/body-events.html`);
+  await expect(page.locator("strong")).toHaveText("100");
+  await page.locator("[data-chars-left-target=input]").fill("hello");
+  await expect(page.locator("strong")).toHaveText("95");
+});
+
+test("using @doc", async ({ page }) => {
+  await page.goto(`file://${testsDir}/doc-events.html`);
+  await expect(page.locator("strong")).toHaveText("100");
+  await page.locator("[data-chars-left-target=input]").fill("hello");
+  await expect(page.locator("strong")).toHaveText("95");
+});
+
+test("using @html", async ({ page }) => {
+  await page.goto(`file://${testsDir}/html-events.html`);
   await expect(page.locator("strong")).toHaveText("100");
   await page.locator("[data-chars-left-target=input]").fill("hello");
   await expect(page.locator("strong")).toHaveText("95");

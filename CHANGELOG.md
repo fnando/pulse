@@ -11,6 +11,11 @@ Prefix your message with one of the following:
 - [Security] in case of vulnerabilities.
 -->
 
+## Unreleased
+
+- [Fixed] Handle cases where event target is triggered by a child element that
+  is not the root element with `event.currentTarget`.
+
 ## v0.0.6
 
 - [Changed] Add support for `@element` as a target to the root element.

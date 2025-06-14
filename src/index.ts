@@ -1,4 +1,5 @@
 type ControllerConstructor<T extends HTMLElement = HTMLElement> = new (
+  app: Application,
   identifier: string,
   element: T,
 ) => Controller<T>;
@@ -17,21 +18,26 @@ function inspect(element: HTMLElement) {
 type TargetElement = Document | HTMLElement | Window;
 
 /**
+ * Define an event listener type.
+ */
+type CustomEventListener<T extends Event> = (event: T) => void;
+
+/**
  * Map special targets to their corresponding elements.
  * If you'd like to have a custom target, you can add it here.
  *
  * @example
  * import { targetMapping } from "@fnando/pulse";
- * targetMapping["@custom"] = document.querySelector("#custom");
+ * targetMapping["@custom"] = () => document.querySelector("#custom");
  *
  * @type {Record<string, TargetElement>}
  */
-export const targetMapping: Record<string, TargetElement> = {
-  "@window": window,
-  "@doc": document,
-  "@document": document,
-  "@body": document.body,
-  "@html": document.documentElement,
+export const targetMapping: Record<string, () => TargetElement> = {
+  "@window": () => window,
+  "@doc": () => document,
+  "@document": () => document,
+  "@body": () => document.body,
+  "@html": () => document.documentElement,
 };
 
 /**
@@ -99,10 +105,21 @@ export class Application<E extends HTMLElement = HTMLElement> {
   private registrations: Record<string, ControllerConstructor<any>> = {};
   private controllerId = 0;
   private associations = new Map<string, Controller[]>();
+  public debug = false;
 
   constructor(element?: E) {
     this.element = (element || document.documentElement) as E;
     this.observer = new MutationObserver(this.handleMutations.bind(this));
+  }
+
+  /**
+   * Log a message to the console if debug mode is enabled.
+   * @param {unknown[]} ...args Arguments that will be logged to the console.
+   */
+  log(...args: unknown[]) {
+    if (this.debug) {
+      console.log(...args);
+    }
   }
 
   /**
@@ -118,6 +135,7 @@ export class Application<E extends HTMLElement = HTMLElement> {
     name: string,
     controllerClass: ControllerConstructor<T>,
   ): void {
+    this.log("registered controller", name);
     this.registrations[name] = controllerClass;
   }
 
@@ -221,7 +239,7 @@ export class Application<E extends HTMLElement = HTMLElement> {
         return;
       }
 
-      const controller = new controllerClass(identifier, element);
+      const controller = new controllerClass(this, identifier, element);
       associatedControllers.push(controller);
 
       controller.connect();
@@ -239,6 +257,7 @@ export class Application<E extends HTMLElement = HTMLElement> {
       ...Array.from(element.querySelectorAll<HTMLElement>("[data-controller]")),
     ].forEach((node) => {
       if (node.dataset.controller) {
+        this.log("connecting", node.dataset.controller, node);
         this.connect(node);
       }
     });
@@ -287,10 +306,20 @@ export class Controller<E extends HTMLElement = HTMLElement> {
   public readonly element: E;
   public readonly listeners: (() => void)[] = [];
   public readonly identifier: string;
+  public readonly app: Application;
 
-  constructor(identifier: string, element: E) {
+  constructor(app: Application, identifier: string, element: E) {
     this.identifier = identifier;
     this.element = element;
+    this.app = app;
+  }
+
+  /**
+   * Log a message to the console if debug mode is enabled.
+   * @param {unknown[]} ...args Arguments that will be logged to the console.
+   */
+  log(...args: unknown[]) {
+    this.app.log(`${this.identifier}`, ...args);
   }
 
   /**
@@ -311,7 +340,7 @@ export class Controller<E extends HTMLElement = HTMLElement> {
    * @param  {string}        expression The event expression. Must come in a
    *                                    form of `target->event`, where `target`
    *                                    is the data-target attribute value.
-   * @param  {EventListener} callback   The function that will be called. This
+   * @param  {CustomEventListener} callback   The function that will be called. This
    *                                    function will be bound to `this`
    *                                    automatically.
    * @param  {AddEventListenerOptions|boolean|undefined} options Set the event
@@ -345,27 +374,34 @@ export class Controller<E extends HTMLElement = HTMLElement> {
    * // Using keyboard events
    * this.on("input->keydown.ctrl+enter:prevent", this.search);
    */
-  on(
+  on<T extends Event>(
     expression: string,
-    callback: EventListener,
+    callback: CustomEventListener<T>,
     options?: AddEventListenerOptions | boolean,
   ) {
     expression.split(/ +/).forEach((expr) => {
       const descriptor = parseEventExpression(expr);
       const bound = callback.bind(this);
-      const selector = `[data-${this.identifier}-target="${descriptor.target}"]`;
-      const target = targetMapping[descriptor.target] || this.element;
+      const target = targetMapping[descriptor.target]?.() || this.element;
+
+      this.log("attaching", expression, target);
 
       const conditions = [
         // Validate whenever the target matches.
         targetMapping[descriptor.target]
           ? () => true
-          : (event: Event) =>
-              event.target &&
-              (("matches" in event.target &&
-                (event.target as HTMLElement).matches(selector)) ||
+          : (event: T) => {
+              return (
                 (descriptor.target === "@element" &&
-                  event.target === this.element)),
+                  event.target === this.element) ||
+                this.targets(descriptor.target).some(
+                  (el) =>
+                    el === event.target ||
+                    el === event.currentTarget ||
+                    el.contains(event.target as HTMLElement),
+                )
+              );
+            },
 
         // Validate keyboard events.
         (event: Event): boolean => {
@@ -391,7 +427,7 @@ export class Controller<E extends HTMLElement = HTMLElement> {
         },
       ];
 
-      const trigger = (event: Event) => {
+      const trigger = (event: T) => {
         if (!conditions.every((v) => v(event))) {
           return;
         }
@@ -404,11 +440,35 @@ export class Controller<E extends HTMLElement = HTMLElement> {
           event.stopPropagation();
         }
 
+        this.log("triggering", expression, event);
+
+        if (once) {
+          off();
+        }
+
         bound(event);
       };
 
-      const off = () => target.removeEventListener(descriptor.event, trigger);
-      target.addEventListener(descriptor.event, trigger, options);
+      const off = () =>
+        target.removeEventListener(descriptor.event, trigger as EventListener);
+
+      const once =
+        typeof options === "boolean" ||
+        options === undefined ||
+        options === null
+          ? false
+          : options.once;
+
+      if (typeof options === "object") {
+        delete options.once;
+      }
+
+      target.addEventListener(
+        descriptor.event,
+        trigger as EventListener,
+        options,
+      );
+
       this.listeners.push(off);
     });
   }
