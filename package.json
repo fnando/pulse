@@ -35,7 +35,7 @@
     "esbuild": "esbuild"
   },
   "devDependencies": {
-    "@biomejs/biome": "1.9.4",
+    "@biomejs/biome": "2.1.1",
     "@fnando/codestyle": "^0.0.13",
     "@playwright/test": "^1.51.1",
     "esbuild": "^0.25.2",
