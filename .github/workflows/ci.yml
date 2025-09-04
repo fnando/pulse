@@ -10,7 +10,7 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v1
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: lts/*
 
@@ -36,7 +36,7 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.4.2
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: lts/*
       - run: npm ci
