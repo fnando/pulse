@@ -43,7 +43,7 @@ jobs:
       - run: npx playwright install --with-deps
       - run: bin/build --test
       - run: npx playwright test --project=${{ matrix.browser }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v5
         if: ${{ !cancelled() && failure() }}
         with:
           name: playwright-report-${{ matrix.browser }}
